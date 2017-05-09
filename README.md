@@ -1,19 +1,22 @@
-# LED Library for Arduino IDE
-The LEDManager provides functions to manage solid-color (2-lead) LEDs, as well as 3-color RGB (4-lead) LEDs.
-Supports ESP8266, Atmel AVR-based platforms (Uno, Mega, Nano, Pro Micro, etc.), and Atmel SAM3X8E ARM Cortex-M3 platforms such as the Due.  
+# LED Manager Library for Arduino IDE
+The LED Manager library provides functions to manage solid-color (2-lead) LEDs, as well as 3-color RGB (4-lead) LEDs.
+LED Manager uses hardware timers for blinking and alternating colors so that LED blinking happens independent of other operations.
+Thus, even if the processor is running code that blocks, the blinking will still occur on schedule. 
+Supports ESP8266, Atmel AVR-based platforms (Uno, Mega, Nano, Pro Micro, etc.), and Atmel SAM3X8E ARM Cortex-M3 platforms such as the Due.
+  
 Both common cathode and common anode RGB LEDs are supported.
 For a common cathode LED, the MCU is a current source and you set each pin connected to the R, G, and B leads HIGH to turn them on.
 The LED has a common ground.
 With a common anode LED, the MCU is a current sink.
 You have a common anode that is set to Vcc, and you set each pin connected to the R, G, and B leads LOW to turn the LED on.
+
 In both cases, be sure to have a current limiting resistor on each of the red, green, and blue lines between the MCU (or ground) and the LED.
 (See [LEDCALC] for an online tool to help you determine the current resistor to use).
-This library is written specifically for the ESP8266 and uses the SDK OS Timer for blinking LEDs.
 
 This library supersedes the [LED3] library.
 It provides all of the functionality of the [LED3] library plus new features.
 
-THis library requires the [SysTimer library].
+THis library requires the [SysTimer Library].
 
 # Programming Interface
 ## Constructors
@@ -77,8 +80,8 @@ void setColor(const LEDColor color1, const LEDColor color2 = LEDColor::NONE,  co
 
 Set from one to six colors of an RGB LED.
 At least one color must be specified.
-When the state is set to ```LEDstate::ON``` then the LED is illuminated using the first color argument.
-The remaining arguments are ignored.
+When the state is set to ```LEDstate::ON``` then the LED is illuminated using the first color in the parameter list.
+The remaining parameters are ignored.
 When the state is set to ```LEDstate::ALTERNATE``` then the LED will cycle through the set of colors passed as arguments.
 In this case, the first color set to ```LEDColor::NONE``` terminates the list, or when all six colors have been displayed.
 The cycle then repeats.
@@ -136,10 +139,11 @@ Of course, you may also clone this repository and manually install the files if 
 # Copyright Notice
 
 Copyright 2017 Rob Redford.
-This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
-To view a copy of this license, visit [BY-NC-SA].
+This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License.
+To view a copy of this license, visit [CC BY-SA].
 
-[SysTimer library]: https://github.com/Rom3oDelta7/SysTimer
-[Latest Release]: https://github.com/Rom3oDelta7/esp8266_LED/releases/latest
+[SysTimer Library]: https://github.com/Rom3oDelta7/SysTimer
+[Latest Release]: https://github.com/Rom3oDelta7/LEDManager/releases/latest
 [LEDCALC]: http://ledcalc.com/
 [LED3]: https://github.com/Rom3oDelta7/LED3
+[CC BY-SA]: https://creativecommons.org/licenses/by-sa/4.0
