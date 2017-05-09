@@ -12,7 +12,6 @@
 */
 
 #include <LEDManager.h>
-#include <vector>
 
 // RGB LED
 #define RED_PIN   14			// pin assignments. Change to match your confiruation
@@ -22,7 +21,8 @@
 // single-color LED
 #define LED_PIN    2       
 
-std::vector<LEDColor> colors = { LEDColor::RED, LEDColor::GREEN, LEDColor::BLUE, LEDColor::MAGENTA, LEDColor::CYAN, LEDColor::WHITE, LEDColor::ORANGE, LEDColor::PURPLE };
+#define COLORS 8
+LEDColor colors[] = { LEDColor::RED, LEDColor::GREEN, LEDColor::BLUE, LEDColor::MAGENTA, LEDColor::CYAN, LEDColor::WHITE, LEDColor::ORANGE, LEDColor::PURPLE };
 
 RGBLED		rgb(RED_PIN, GREEN_PIN, BLUE_PIN);
 //RGBLED		rgb(RED_PIN, GREEN_PIN, BLUE_PIN, LEDType::ANODE);						// constructor for common anode
@@ -84,13 +84,15 @@ void loop ( void ) {
       while (true) delay (500);
    }
    
-   // run through the solid colors, solid LED on
+   // run through the solid colors, solid LED o
    Serial.println(F("\n\n... Starting cycle ... SOLID COLORS ..."));
    led.setState(LEDState::ON);
-   for ( auto color : colors ) {
+   for ( int i = 0; i < COLORS; i++ ) {
+      LEDColor color = colors[i];
       rgb.setColor(color);                      // after setting color, must set to ON before it is illuminated
       rgb.setState(LEDState::ON);
-      Serial.printf("Color: %s (%0X)\n", colorName(rgb.getColor()[0]).c_str(), color);       // just to demo getColor() function
+      Serial.print(F("Color: ")); Serial.print(colorName(rgb.getColor()[0]));       // just to demo getColor() function
+      Serial.print(F(" ")); Serial.println((uint32_t)color, HEX);
       delay(5000);
       rgb.setState(LEDState::OFF);
    }	
@@ -102,7 +104,8 @@ void loop ( void ) {
    for ( auto color : colors ) {
       rgb.setColor(color);
       rgb.setState(LEDState::BLINK_ON, 500);
-      Serial.printf("Color: %s (%0X)\n", colorName(rgb.getColor()[0]).c_str(), color);
+      Serial.print(F("Color: ")); Serial.print(colorName(rgb.getColor()[0]));
+      Serial.print(F(" ")); Serial.println((uint32_t)color, HEX);
       delay(5000);
       rgb.setState(LEDState::OFF);
    }
