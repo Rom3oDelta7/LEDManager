@@ -71,6 +71,11 @@ As PWM is implemented with ```analogWrite``` there is the potential for unexpect
 While this does not typically happen, the library will use ```digitalWrite``` on a per-pin basis for solid colors
 such as RED or CYAN to avoid potential issues as well as reduce overall resource utilization.
 
+Note that the pre-defined colors that are not "solid" colors (such as red or green) are essentially starting points
+for the color you are trying to achieve.
+The PWM-based colors are highly dependent on the LED itself, voltage, current, etc.
+You will likely need to tweak these values to achive your desired color result.
+
 ### Functions
 
 ```C++
