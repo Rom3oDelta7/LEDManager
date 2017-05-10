@@ -14,7 +14,7 @@
 #include <LEDManager.h>
 
 // RGB LED
-#define RED_PIN   14			// pin assignments. Change to match your confiruation
+#define RED_PIN   14			// ESP8266 pin assignments. Change to match your board & confiruation
 #define GREEN_PIN	12			// make sure there is a current limiting resistor attached to each color lead
 #define BLUE_PIN	13
 
@@ -23,11 +23,6 @@
 
 #define COLORS 8
 LEDColor colors[] = { LEDColor::RED, LEDColor::GREEN, LEDColor::BLUE, LEDColor::MAGENTA, LEDColor::CYAN, LEDColor::WHITE, LEDColor::ORANGE, LEDColor::PURPLE };
-
-RGBLED		rgb(RED_PIN, GREEN_PIN, BLUE_PIN);
-//RGBLED		rgb(RED_PIN, GREEN_PIN, BLUE_PIN, LEDType::ANODE);						// constructor for common anode
-
-SingleLED       led(LED_PIN);
 
 
 void setup ( void ) {
@@ -74,6 +69,10 @@ String colorName (const LEDColor color) {
 }
 
 void loop ( void ) {
+   RGBLED		rgb(RED_PIN, GREEN_PIN, BLUE_PIN);
+   //RGBLED		rgb(RED_PIN, GREEN_PIN, BLUE_PIN, LEDType::ANODE);						// constructor for common anode
+
+   SingleLED   led(LED_PIN);
    
    if (!rgb.begin()) {
       Serial.println(F("ERROR: could not allocate RGB LED object <<<<"));
@@ -148,4 +147,5 @@ void loop ( void ) {
    
    Serial.println(F("\n\n... Cycle complete ...\n"));
    rgb.setState(LEDState::OFF);
+   while (true) delay(500);
 }

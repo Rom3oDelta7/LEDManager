@@ -16,9 +16,9 @@ In both cases, be sure to have a current limiting resistor on each of the red, g
 This library supersedes the [LED3] library.
 It provides all of the functionality of the [LED3] library plus new features.
 
-THis library requires the [SysTimer Library].
+This library requires the [SysTimer Library].
 
-# Programming Interface
+## Programming Interface
 ## Constructors
 ```C++
 SingleLED (const uint8_t pin);
@@ -37,7 +37,7 @@ The default (no argument supplied) is a common cathode type LED.
 If the LED has a common anode, the optional parameter should be ```LEDType::ANODE```.
 Each pin is set to ```OUTPUT``` mode by the library.
 
-## RGB LED Colors
+### RGB LED Colors
 RGB LED colors consist of a 24-bit value,
 with the most significant byte (byte 2) representing red, byte 1 representing green, and the least significant byte (byte 0) representing blue.
 The following colors are predefined.
@@ -71,7 +71,7 @@ As PWM is implemented with ```analogWrite``` there is the potential for unexpect
 While this does not typically happen, the library will use ```digitalWrite``` on a per-pin basis for solid colors
 such as RED or CYAN to avoid potential issues as well as reduce overall resource utilization.
 
-## Functions
+### Functions
 
 ```C++
 void setColor(const LEDColor color1, const LEDColor color2 = LEDColor::NONE,  const LEDColor color3 = LEDColor::NONE,
@@ -123,20 +123,31 @@ LEDState getState(void);
 
 Returns the current LED state.
 
-# Examples
+## Important Caveats
+One AVR platforms, there is a bug in the compiler where the class "constructor" is not called when the object
+is declared in global space (e.g. outside all functions). 
+Thus, the object parameters are not properly initialized and strange behavior results.
+The workaround for this is to declare the object inside a function, such as ```loop```.
+
+There is no class "destructor" for the LED objects. 
+This means that when they go out of scope (say at the end of ```loop```) they are are not destroyed.
+The next time the loop starts, they are allocated anew and you quickly run out of the underlying timers that support the LED objects.
+The workaround is to set your loop up so that it never exits (e.g. create a loop withing the ```loop``` function).
+
+## Examples
 1. _LightCycle.ino_: Demonstrates the different modes for single-color and RGB LEDs.
 This example demonstreates how to alternate between two separate LEDs or use alternating colors on a single RGB LED.
 2. _ChooseColor.ino_: Reads a 24-bit heaxadecimal color code from the serial port and displays that color.
 See this example for how to set arbitrary color values other than the pre-defined ones.
 
-# Installation
+## Installation
 
 This library is also maintained in GitHub, which has a release mechanism.
 The easiest way to install this is to get the [Latest Release] and install it using the Arduino IDE Library Manager.
 
 Of course, you may also clone this repository and manually install the files if you prefer.
 
-# Copyright Notice
+## Copyright Notice
 
 Copyright 2017 Rob Redford.
 This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License.
