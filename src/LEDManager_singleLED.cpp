@@ -32,13 +32,9 @@ SingleLED::SingleLED (const uint8_t pin) {
    pinMode(_LEDpin, OUTPUT);
 }
 
-// ensure timer object is valid, then initialize timer ISR
+// ensure timer object is valid
 bool SingleLED::begin(void) {
-   if (_timer.begin()) {
-      return _timer.attachInterrupt(reinterpret_cast<CallbackArg>(&_SingleToggle), reinterpret_cast<void*>(this));
-   } else {
-      return false;
-   }
+   return _timer.begin();
 }
 
 // Single-color LED illumination
@@ -81,6 +77,7 @@ void SingleLED::setState(const LEDState ledState, const uint32_t interval) {
 
       if ( ledState == LEDState::BLINK_ON ) {
          // blink, with initial state ON
+         _timer.attachInterrupt(reinterpret_cast<CallbackArg>(&_SingleToggle), reinterpret_cast<void*>(this));
          _timer.setInterval(interval);
          _timer.arm(true);
          _timerArmed = true;
@@ -94,6 +91,7 @@ void SingleLED::setState(const LEDState ledState, const uint32_t interval) {
 
       if ( ledState == LEDState::BLINK_OFF ) {
          // blinking, but initial state is OFF
+         _timer.attachInterrupt(reinterpret_cast<CallbackArg>(&_SingleToggle), reinterpret_cast<void*>(this));
          _timer.setInterval(interval);
          _timer.arm(true);
          _timerArmed = true;

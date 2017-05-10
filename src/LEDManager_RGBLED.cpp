@@ -76,10 +76,10 @@ void RGBLED::setColor(const LEDColor color1, const LEDColor color2,  const LEDCo
 
 // illuminate an RGB LED
 void RGBLED::_illuminate (const LEDColor targetColor) {
-   int     color = static_cast<int>(targetColor);
-   uint8_t redPWM = (color & 0xFF0000) >> 16;
-   uint8_t greenPWM = (color & 0xFF00) >> 8;
-   uint8_t bluePWM = (color & 0xFF);
+   uint32_t color = static_cast<uint32_t>(targetColor);
+   uint8_t  redPWM = (color & 0xFF0000) >> 16;
+   uint8_t  greenPWM = (color & 0xFF00) >> 8;
+   uint8_t  bluePWM = (color & 0xFF);
    LOG(PSTR("INFO> Illumination: R(%0x), G(%0x), B(%0x)\n"), redPWM, greenPWM, bluePWM);
    if ( _type == LEDType::ANODE ) {
       // for common anode configs, the logic is active LOW (turn on LED with 0), so we invert the values
